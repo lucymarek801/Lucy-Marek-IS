@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AI App | Lucy Marek</title>
+  <style>
+    body { margin:0; font-family: Arial, Helvetica, sans-serif; background:#0b1220; color:#e5e7eb; }
+    .wrap { width:min(720px, 92%); margin:30px auto; }
+    .top { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:14px; }
+    a { color:#93c5fd; text-decoration:none; font-weight:700; }
+    a:hover { text-decoration:underline; }
+    .card { background:#111a2e; border:1px solid rgba(255,255,255,0.12); border-radius:16px; padding:18px; box-shadow:0 12px 30px rgba(0,0,0,0.35); }
+    p { color:#94a3b8; margin-top:6px; }
+    .row { display:flex; gap:10px; flex-wrap:wrap; margin-top:12px; }
+    input { flex:1; min-width:180px; padding:10px 12px; border-radius:12px; border:1px solid rgba(255,255,255,0.16); background:#0b1220; color:#e5e7eb; outline:none; }
+    button { padding:10px 14px; border-radius:12px; border:none; font-weight:800; cursor:pointer; background:#e5e7eb; color:#0b1220; }
+    button.secondary { background:transparent; border:1px solid rgba(255,255,255,0.16); color:#e5e7eb; }
+    .msg { margin-top:12px; font-size:1.05rem; font-weight:800; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a href="scratch.html">Back to Scratch</a>
+      <a href="index.html">Professional Site</a>
+    </div>
+
+    <div class="card">
+      <h1 style="margin:0 0 8px 0;">Number Guessing Game</h1>
+      <p>I’m thinking of a number from 1–100. Guess it.</p>
+
+      <div class="row">
+        <input id="guess" type="number" min="1" max="100" placeholder="Enter a number (1–100)" />
+        <button id="btnGuess">Guess</button>
+        <button id="btnNew" class="secondary">New Number</button>
+      </div>
+
+      <div class="msg" id="msg">Ready.</div>
+      <p id="count"></p>
+    </div>
+  </div>
+
+  <script>
+    let target = 0;
+    let tries = 0;
+
+    function newGame() {
+      target = Math.floor(Math.random() * 100) + 1;
+      tries = 0;
+      document.getElementById("msg").textContent = "New number set. Go.";
+      document.getElementById("count").textContent = "";
+      document.getElementById("guess").value = "";
+      document.getElementById("guess").focus();
+    }
+
+    function doGuess() {
+      const input = document.getElementById("guess");
+      const n = parseInt(input.value, 10);
+
+      if (Number.isNaN(n) || n < 1 || n > 100) {
+        document.getElementById("msg").textContent = "Enter a valid number 1–100.";
+        return;
+      }
+
+      tries += 1;
+
+      if (n === target) {
+        document.getElementById("msg").textContent = `Correct. It was ${target}.`;
+        document.getElementById("count").textContent = `Tries: ${tries}`;
+      } else if (n < target) {
+        document.getElementById("msg").textContent = "Too low.";
+        document.getElementById("count").textContent = `Tries: ${tries}`;
+      } else {
+        document.getElementById("msg").textContent = "Too high.";
+        document.getElementById("count").textContent = `Tries: ${tries}`;
+      }
+
+      input.focus();
+      input.select();
+    }
+
+    document.getElementById("btnGuess").addEventListener("click", doGuess);
+    document.getElementById("btnNew").addEventListener("click", newGame);
+    document.getElementById("guess").addEventListener("keydown", (e) => {
+      if (e.key === "Enter") doGuess();
+    });
+
+    newGame();
+  </script>
+</body>
+</html>
